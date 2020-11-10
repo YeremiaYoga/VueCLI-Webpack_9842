@@ -1,7 +1,6 @@
 <template>
     <v-main class="list">
         <h3 class="text-h3 font-weight-medium mb-5">To Do List UGD</h3>
-
         <v-card>
             <v-card-title>
                 <v-text-field
@@ -9,14 +8,12 @@
                     append-icon="mdi-magnify"
                     label="Search"
                     single-line
-                    hide-details
-                ></v-text-field>
-
+                    hide-details>
+                </v-text-field>
                 <v-spacer></v-spacer>
 
                 <v-btn color="success" dark @click="dialog = true">tambah</v-btn>
             </v-card-title>
-
             <v-data-table 
                 :headers="headers" 
                 :items="todos"
@@ -37,11 +34,9 @@
                 </template>
 
                 <template v-slot:[`item.actions`]="{ item }">
-
                     <v-icon small class="icnote mr-2" @click="detailItem(item)">{{ icons.mdiTextBoxSearchOutline}}</v-icon>
                     <v-icon small class="pencil mr-2" @click="editItem(item)">  {{ icons.mdiPencil }}</v-icon>
                     <v-icon small class="bin mr-2" @click="deleteItem(item)">   {{ icons.mdiDelete }}</v-icon>
-
                 </template>
             </v-data-table>
         </v-card>
@@ -61,21 +56,21 @@
                             v-model="formTodo.task"
                             label="Task"
                             required
-                            autofocus
-                        ></v-text-field>
+                            autofocus>
+                        </v-text-field>
 
                         <v-select
                             v-model="formTodo.priority"
                             :items="['Penting', 'Biasa', 'Tidak penting']"
                             label="Priority"
-                            required
-                        ></v-select>
+                            required>
+                        </v-select>
 
                         <v-textarea
                             v-model="formTodo.note"
                             label="Note"
-                            required
-                        ></v-textarea>
+                            required>
+                        </v-textarea>
                     </v-container>
                 </v-card-text>
 
@@ -88,43 +83,28 @@
                         @click="save">
                         Save
                     </v-btn>
-
                     <v-btn v-else 
                         color="blue darken-1" 
                         text 
                         @click="edit(formTodo)">
                         Save
                     </v-btn>
-
                 </v-card-actions>
             </v-card>
         </v-dialog>
-       
         <v-dialog v-model="dialogdel" persistent max-width="400px">
             <v-card>
                 <v-card-title>
-                    <span class="headline">
-                        Yakin ingin menghapus?
-                    </span>
+                    <span class="headline">Yakin ingin menghapus?</span>
                 </v-card-title>
-
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    
-                    <v-btn color="green darken-1" text @click="cancel">
-                        Tidak
-                    </v-btn>
-
-                    <v-btn color="red darken-1" text @click="confirmdelete">
-                        Ya
-                    </v-btn>
-
+                    <v-btn color="green darken-1" text @click="cancel">Tidak</v-btn>
+                    <v-btn color="red darken-1" text @click="confirmdelete">Ya</v-btn>
                 </v-card-actions>
 
             </v-card>
-        </v-dialog>
-
-                    
+        </v-dialog> 
         <v-dialog v-model="dialognote" persistent max-width="400px">
             <v-card>
                 <v-card-title>
@@ -150,14 +130,10 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red darken-1" text @click="cancel">
-                        Close
-                    </v-btn>
+                    <v-btn color="red darken-1" text @click="cancel">Close</v-btn>
                 </v-card-actions>
-
             </v-card>
         </v-dialog>
-
     </v-main>
 </template>
 <script>
@@ -167,10 +143,8 @@ import {
     mdiDelete,
     mdiTextBoxSearchOutline,
 } from '@mdi/js'
-
 export default {
     name: "List",
-
     data() {
         return {
             search: null,
@@ -180,18 +154,15 @@ export default {
             dialog: false,
             dialogdel: false,
             dialognote: false,
-    
+            filters: {
+                search: '',
+                priority: '',
+            },
             icons: {
                 mdiPencil,
                 mdiDelete,
                 mdiTextBoxSearchOutline,
             },
-
-            filters: {
-                search: '',
-                priority: '',
-            },
-
             headers: [
                 {
                     text: "Task",
@@ -199,7 +170,6 @@ export default {
                     sortable: true,
                     value: "task",
                 },
-                
                 { 
                     text: "Priority",
                     field: "priority", 
@@ -211,7 +181,6 @@ export default {
                     sortable: false,
                 },
             ],
-
             todos: [
                 {
                     task: "bernafas",
@@ -229,13 +198,11 @@ export default {
                     note: "masak air 500ml",
                 },
             ],
-
             formTodo: {
                 task: null,
                 priority: null,
                 note: null,
             },
-
             detail: {
                 task: null,
                 priority: null,
@@ -243,13 +210,11 @@ export default {
             }
         };
     },
-
     methods: {
         save() {
             this.todos.push(this.formTodo);
             this.cancel();
         },
-
         cancel() {
             this.resetForm();
             this.dialog = false;
@@ -258,17 +223,14 @@ export default {
             this.dialogdel = false;
             this.dialognote = false;
         },
-
         deleteItem(item) {
             this.dialogdel = true;
             this.edititem = item;
         },
-
         confirmdelete() {
             this.todos.splice(this.todos.indexOf(this.edititem), 1);
             this.dialogdel = false;
         },
-
         editItem(item) {
             this.adding = false;
             this.formTodo = {
@@ -288,14 +250,12 @@ export default {
             }
             this.dialognote = true;
         },
-
         edit(formTodo) {
             this.edititem.task = formTodo.task;
             this.edititem.priority = formTodo.priority;
             this.edititem.note = formTodo.note;
             this.cancel();
         },
-        
         resetForm() {
             this.formTodo = {
                 task: null,
@@ -306,7 +266,6 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 .icnote{color: plum !important;}
 .pencil{color: lightblue !important;}
